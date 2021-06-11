@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+// getKeysOfMap returns keys of map.
 func getKeysOfMap(myMap map[string]float64) []string {
 	keys := make([]string, 0, len(myMap))
 	for k := range myMap {
@@ -13,7 +14,7 @@ func getKeysOfMap(myMap map[string]float64) []string {
 	return keys
 }
 
-// all_combinations returns all combinations for a given string array with weight less than given weight
+// getMaxSubset returns a max subset for a given string array with total weight less than or equal to passed weight
 func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (subsets []string) {
 	max_subset_sum := float64(0)
 	set := getKeysOfMap(pkg_weight)
@@ -47,6 +48,7 @@ func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (subsets []
 	return subsets
 }
 
+//create vehicals
 func create_vehicals(number_of_vehicals int) (vehicals_list map[string]float64) {
 	vehicals_list = make(map[string]float64)
 	for i := 0; i < number_of_vehicals; i++ {
@@ -56,6 +58,7 @@ func create_vehicals(number_of_vehicals int) (vehicals_list map[string]float64) 
 	return vehicals_list
 }
 
+// create_map_with_pkgname_distance returns map with pkgname and distance
 func create_map_with_pkgname_distance(order_list map[int][]string) (order_with_distance map[string]float64) {
 	order_with_distance = make(map[string]float64)
 	for i := 0; i < len(order_list); i++ {
@@ -64,6 +67,7 @@ func create_map_with_pkgname_distance(order_list map[int][]string) (order_with_d
 	return order_with_distance
 }
 
+// check_fastest_available_vehical will return the earliest available vehical
 func check_fastest_available_vehical(vehicals_list map[string]float64) (vehical string, time_availability float64) {
 	i := 0
 	for key, value := range vehicals_list {
@@ -81,43 +85,55 @@ func check_fastest_available_vehical(vehicals_list map[string]float64) (vehical 
 	return vehical, time_availability
 }
 
+// calculate_duration will return a map with pkg_name as key and time as value
 func calculate_duration(combinations [][]string, order_list map[int][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string]float64 {
+	// create vehicals with initial value as zero
 	vehicals_list := create_vehicals(number_of_vehicals)
+	// returns a map with key of pkg_name and value of distance
 	order_with_distance := create_map_with_pkgname_distance(order_list)
 	result_map_with_time := make(map[string]float64)
 	for _, combination := range combinations {
+		// return the vehical name and time of availability
 		vehical, time_availability := check_fastest_available_vehical(vehicals_list)
 		present_order_delivery_time := float64(0)
 		for _, pkg_name := range combination {
+			// temp contains the time of current package
 			temp := order_with_distance[pkg_name] / max_speed
 			result_map_with_time[pkg_name] = temp + time_availability
+			// This condition to set the total time taken to deliver all the packages
+			// in a single trips
 			if present_order_delivery_time < temp {
 				present_order_delivery_time = temp
 			}
 		}
-		// for _, pkg_name := range combination {
-		// 	result_map_with_time[pkg_name] = time_availability + (present_order_delivery_time * 2)
-		// }
+		// total time*2 is beacuse the vehical has to return to the store point
+		// to pick another package
 		vehicals_list[vehical] = time_availability + (present_order_delivery_time * 2)
 	}
 	return result_map_with_time
 }
 
-// calculate time
+// Calculate time will calculate the time to be taken to deliver the order
 func Calculate_time(order_list map[int][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[int][]string {
 	temp_orders := make(map[string]float64)
 	var combinations [][]string
+	// temp map is created with pkg name as key and weight as value
 	for _, value := range order_list {
 		temp_orders[value[0]] = convertToFloat(value[1])
 	}
 	for len(temp_orders) != 0 {
+		// getMaxSubset will return the set of packages with max weight
 		combination := getMaxSubset(temp_orders, max_weight)
+		// store all the set of packages which need to be delivered
 		combinations = append(combinations, combination)
+		// removing the max set of packages to find the max set from other packages
 		for _, pkg_name := range combination {
 			delete(temp_orders, pkg_name)
 		}
 	}
+	// calculate_duration will return the time tale to deliver each package
 	pkg_with_duration := calculate_duration(combinations, order_list, number_of_vehicals, max_speed, max_weight)
+	// adding time_duration to the order details
 	for key, value := range order_list {
 		for key1, value1 := range pkg_with_duration {
 			if value[0] == key1 {
@@ -128,13 +144,13 @@ func Calculate_time(order_list map[int][]string, number_of_vehicals int, max_spe
 	return order_list
 }
 
-// display_Order_Cost_with_time will just display the total cost after discount
+// Display_Order_Cost_with_time will just display the total cost after discount
 func Display_Order_Cost_with_time(orders_cost, orders_time map[int][]string) {
 	fmt.Println("\nORDERS COST WITH TIME:- ")
 	for i := 0; i < len(orders_time); i++ {
 		orders_cost[i] = append(orders_cost[i], orders_time[i][4])
 	}
 	for i := 0; i < len(orders_cost); i++ {
-		fmt.Println(orders_cost[i][0], " ", orders_cost[i][1], " ", orders_cost[i][2], " ", orders_cost[i][3])
+		fmt.Println(orders_cost[i][0], " ", orders_cost[i][1], " ", orders_cost[i][2], " ", orders_cost[i][3]+"hr")
 	}
 }
