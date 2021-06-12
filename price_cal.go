@@ -32,36 +32,28 @@ func discount_Calculate(total_cost_before_discount float64, offer_code string, p
 			discount = (total_cost_before_discount * 5) / 100
 		}
 	} else {
+		// here we can add new offer codes
 		discount = 0
 	}
 	return discount
 }
 
-// calulate the total cost of a pkg
-func Calculate_cost(order_list map[int][]string, base_delivery_cost float64) map[int][]string {
-	orders_cost := make(map[int][]string)
+// calulate_cost will calculate the total cost of a pkg
+func calculate_cost(order_list map[string][]string, base_delivery_cost float64) map[string][]string {
+	orders_cost := make(map[string][]string)
 	// iterate through each order and calculate the cost
 	for key, pkg_details := range order_list {
 		// convert weight and distance to float
-		pkg_weight := convertToFloat(pkg_details[1])
-		pkg_distance := convertToFloat(pkg_details[2])
+		pkg_weight := convertToFloat(pkg_details[0])
+		pkg_distance := convertToFloat(pkg_details[1])
 		// calculate the total distance before discount using the formula
 		total_cost_before_discount := base_delivery_cost + (pkg_weight * float64(10)) + (pkg_distance * float64(5))
 		// calcuate the discount
-		discount := discount_Calculate(total_cost_before_discount, pkg_details[3], pkg_weight, pkg_distance)
+		discount := discount_Calculate(total_cost_before_discount, pkg_details[2], pkg_weight, pkg_distance)
 		total_cost_after_discount := total_cost_before_discount - discount
 		// store the calculated data in a map and return the map
-		orders_cost[key] = append(orders_cost[key], pkg_details[0])
 		orders_cost[key] = append(orders_cost[key], fmt.Sprintf("%f", discount))
 		orders_cost[key] = append(orders_cost[key], fmt.Sprintf("%f", total_cost_after_discount))
 	}
 	return orders_cost
-}
-
-// display_Order_Cost will just display the total cost after discount
-func Display_Order_Cost(orders_cost map[int][]string, number_of_packages int) {
-	fmt.Println("\n ORDERS COST:- ")
-	for i := 0; i < number_of_packages; i++ {
-		fmt.Println(orders_cost[i][0], " ", orders_cost[i][1], " ", orders_cost[i][2])
-	}
 }

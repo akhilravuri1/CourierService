@@ -38,17 +38,17 @@ func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (subsets []
 			subset_sum += pkg_weight[pkg_name]
 		}
 		// add subset to subsets
-		if subset_sum <= max_weight {
-			if subset_sum > max_subset_sum {
-				max_subset_sum = subset_sum
-				subsets = subset
-			}
+		// check whether subset_sum is less that max_weight
+		// grater than existing max subset weight
+		if subset_sum <= max_weight && subset_sum > max_subset_sum {
+			max_subset_sum = subset_sum
+			subsets = subset
 		}
 	}
 	return subsets
 }
 
-//create vehicals
+// create vehicals
 func create_vehicals(number_of_vehicals int) (vehicals_list map[string]float64) {
 	vehicals_list = make(map[string]float64)
 	for i := 0; i < number_of_vehicals; i++ {
@@ -59,10 +59,10 @@ func create_vehicals(number_of_vehicals int) (vehicals_list map[string]float64) 
 }
 
 // create_map_with_pkgname_distance returns map with pkgname and distance
-func create_map_with_pkgname_distance(order_list map[int][]string) (order_with_distance map[string]float64) {
+func create_map_with_pkgname_distance(order_list map[string][]string) (order_with_distance map[string]float64) {
 	order_with_distance = make(map[string]float64)
-	for i := 0; i < len(order_list); i++ {
-		order_with_distance[order_list[i][0]] = convertToFloat(order_list[i][2])
+	for key := range order_list {
+		order_with_distance[key] = convertToFloat(order_list[key][1])
 	}
 	return order_with_distance
 }
@@ -86,7 +86,7 @@ func check_fastest_available_vehical(vehicals_list map[string]float64) (vehical 
 }
 
 // calculate_duration will return a map with pkg_name as key and time as value
-func calculate_duration(combinations [][]string, order_list map[int][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string]float64 {
+func calculate_duration(combinations [][]string, order_list map[string][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string]float64 {
 	// create vehicals with initial value as zero
 	vehicals_list := create_vehicals(number_of_vehicals)
 	// returns a map with key of pkg_name and value of distance
@@ -113,13 +113,13 @@ func calculate_duration(combinations [][]string, order_list map[int][]string, nu
 	return result_map_with_time
 }
 
-// Calculate time will calculate the time to be taken to deliver the order
-func Calculate_time(order_list map[int][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[int][]string {
+// calculate_time will calculate the time to be taken to deliver the order
+func calculate_time(order_list map[string][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string][]string {
 	temp_orders := make(map[string]float64)
 	var combinations [][]string
 	// temp map is created with pkg name as key and weight as value
-	for _, value := range order_list {
-		temp_orders[value[0]] = convertToFloat(value[1])
+	for key, value := range order_list {
+		temp_orders[key] = convertToFloat(value[0])
 	}
 	for len(temp_orders) != 0 {
 		// getMaxSubset will return the set of packages with max weight
@@ -134,9 +134,9 @@ func Calculate_time(order_list map[int][]string, number_of_vehicals int, max_spe
 	// calculate_duration will return the time tale to deliver each package
 	pkg_with_duration := calculate_duration(combinations, order_list, number_of_vehicals, max_speed, max_weight)
 	// adding time_duration to the order details
-	for key, value := range order_list {
+	for key := range order_list {
 		for key1, value1 := range pkg_with_duration {
-			if value[0] == key1 {
+			if key == key1 {
 				order_list[key] = append(order_list[key], fmt.Sprintf("%f", value1))
 			}
 		}
@@ -144,13 +144,13 @@ func Calculate_time(order_list map[int][]string, number_of_vehicals int, max_spe
 	return order_list
 }
 
-// Display_Order_Cost_with_time will just display the total cost after discount
-func Display_Order_Cost_with_time(orders_cost, orders_time map[int][]string) {
+// display_order_cost_with_time will just display the total cost after discount
+func display_order_cost_with_time(orders_cost, orders_time map[string][]string) {
 	fmt.Println("\nORDERS COST WITH TIME:- ")
-	for i := 0; i < len(orders_time); i++ {
-		orders_cost[i] = append(orders_cost[i], orders_time[i][4])
+	for key := range orders_time {
+		orders_cost[key] = append(orders_cost[key], orders_time[key][3])
 	}
-	for i := 0; i < len(orders_cost); i++ {
-		fmt.Println(orders_cost[i][0], " ", orders_cost[i][1], " ", orders_cost[i][2], " ", orders_cost[i][3]+"hr")
+	for pkg_name := range orders_cost {
+		fmt.Println(pkg_name, " ", orders_cost[pkg_name][0], " ", orders_cost[pkg_name][1], " ", orders_cost[pkg_name][2]+"hr")
 	}
 }
