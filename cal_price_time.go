@@ -29,7 +29,7 @@ func Calculate_Time(orders_list map[string][]string, number_of_vehicals int, max
 			delete(orders_list, id)
 		}
 	}
-	orders_time := Calculate_Time(orders_list, number_of_vehicals, max_speed, max_weight)
+	orders_time := calculate_time(orders_list, number_of_vehicals, max_speed, max_weight)
 	return orders_time
 }
 
