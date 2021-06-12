@@ -143,14 +143,3 @@ func calculate_time(order_list map[string][]string, number_of_vehicals int, max_
 	}
 	return order_list
 }
-
-// display_order_cost_with_time will just display the total cost after discount
-func display_order_cost_with_time(orders_cost, orders_time map[string][]string) {
-	fmt.Println("\nORDERS COST WITH TIME:- ")
-	for key := range orders_time {
-		orders_cost[key] = append(orders_cost[key], orders_time[key][3])
-	}
-	for pkg_name := range orders_cost {
-		fmt.Println(pkg_name, " ", orders_cost[pkg_name][0], " ", orders_cost[pkg_name][1], " ", orders_cost[pkg_name][2]+"hr")
-	}
-}
