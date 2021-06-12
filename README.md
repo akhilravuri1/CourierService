@@ -1,6 +1,6 @@
 # CourierService
 
-Calulates order amount after discount and time to deliver the order.
+Calculates order amount after discount and time to deliver the order.
 
 ## Prerequisite
 

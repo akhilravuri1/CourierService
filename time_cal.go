@@ -15,7 +15,7 @@ func getKeysOfMap(myMap map[string]float64) []string {
 }
 
 // getMaxSubset returns a max subset for a given string array with total weight less than or equal to passed weight
-func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (subsets []string) {
+func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (max_subset []string) {
 	max_subset_sum := float64(0)
 	set := getKeysOfMap(pkg_weight)
 	length := uint(len(set))
@@ -42,10 +42,10 @@ func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (subsets []
 		// grater than existing max subset weight
 		if subset_sum <= max_weight && subset_sum > max_subset_sum {
 			max_subset_sum = subset_sum
-			subsets = subset
+			max_subset = subset
 		}
 	}
-	return subsets
+	return max_subset
 }
 
 // create vehicals
@@ -116,7 +116,8 @@ func calculate_duration(combinations [][]string, order_list map[string][]string,
 // calculate_time will calculate the time to be taken to deliver the order
 func calculate_time(order_list map[string][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string][]string {
 	temp_orders := make(map[string]float64)
-	var combinations [][]string
+	// pkg_del_seq is an array of sequence in which packages will be delivered
+	var pkg_del_seq [][]string
 	// temp map is created with pkg name as key and weight as value
 	for key, value := range order_list {
 		temp_orders[key] = convertToFloat(value[0])
@@ -125,14 +126,14 @@ func calculate_time(order_list map[string][]string, number_of_vehicals int, max_
 		// getMaxSubset will return the set of packages with max weight
 		combination := getMaxSubset(temp_orders, max_weight)
 		// store all the set of packages which need to be delivered
-		combinations = append(combinations, combination)
+		pkg_del_seq = append(pkg_del_seq, combination)
 		// removing the max set of packages to find the max set from other packages
 		for _, pkg_name := range combination {
 			delete(temp_orders, pkg_name)
 		}
 	}
-	// calculate_duration will return the time tale to deliver each package
-	pkg_with_duration := calculate_duration(combinations, order_list, number_of_vehicals, max_speed, max_weight)
+	// calculate_duration will return the time taken to deliver each package
+	pkg_with_duration := calculate_duration(pkg_del_seq, order_list, number_of_vehicals, max_speed, max_weight)
 	// adding time_duration to the order details
 	for key := range order_list {
 		for key1, value1 := range pkg_with_duration {
