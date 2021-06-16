@@ -5,7 +5,7 @@ import "fmt"
 // Calculate function will calculate and diaplay the discount amount, price to be paid after discount and time to deliver
 func Calculate(orders_list map[string][]string, base_delivery_cost float64, number_of_vehicals int, max_speed float64, max_weight float64) {
 	for id, pkg_details := range orders_list {
-		if convertToFloat(pkg_details[0]) > max_weight {
+		if convert_to_float(pkg_details[0]) > max_weight {
 			fmt.Println("Removing", id, "from the orders because it's weight is graterthan the vehical maximum carring weight")
 			delete(orders_list, id)
 		}
@@ -24,7 +24,7 @@ func Calculate_Cost(orders_list map[string][]string, base_delivery_cost float64)
 // Calculate_Time exposed API to return estimated time
 func Calculate_Time(orders_list map[string][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string][]string {
 	for id, pkg_details := range orders_list {
-		if convertToFloat(pkg_details[0]) > max_weight {
+		if convert_to_float(pkg_details[0]) > max_weight {
 			fmt.Println("Removing", id, "from the orders because it's weight is greater than the vehical maximum carring weight")
 			delete(orders_list, id)
 		}

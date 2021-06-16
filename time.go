@@ -5,8 +5,8 @@ import (
 	"strconv"
 )
 
-// getKeysOfMap returns keys of map.
-func getKeysOfMap(myMap map[string]float64) []string {
+// get_keys_of_map returns keys of map.
+func get_keys_of_map(myMap map[string]float64) []string {
 	keys := make([]string, 0, len(myMap))
 	for k := range myMap {
 		keys = append(keys, k)
@@ -14,10 +14,10 @@ func getKeysOfMap(myMap map[string]float64) []string {
 	return keys
 }
 
-// getMaxSubset returns a max subset for a given string array with total weight less than or equal to passed weight
-func getMaxSubset(pkg_weight map[string]float64, max_weight float64) (max_subset []string) {
+// get_max_subset returns a max subset for a given string array with total weight less than or equal to passed weight
+func get_max_subset(pkg_weight map[string]float64, max_weight float64) (max_subset []string) {
 	max_subset_sum := float64(0)
-	set := getKeysOfMap(pkg_weight)
+	set := get_keys_of_map(pkg_weight)
 	length := uint(len(set))
 	// Go through all possible combinations of objects
 	// from 1 (only first object in subset) to 2^length (all objects in subset)
@@ -62,7 +62,7 @@ func create_vehicals(number_of_vehicals int) (vehicals_list map[string]float64) 
 func create_map_with_pkgname_distance(order_list map[string][]string) (order_with_distance map[string]float64) {
 	order_with_distance = make(map[string]float64)
 	for key := range order_list {
-		order_with_distance[key] = convertToFloat(order_list[key][1])
+		order_with_distance[key] = convert_to_float(order_list[key][1])
 	}
 	return order_with_distance
 }
@@ -120,11 +120,11 @@ func calculate_time(order_list map[string][]string, number_of_vehicals int, max_
 	var pkg_del_seq [][]string
 	// temp map is created with pkg name as key and weight as value
 	for key, value := range order_list {
-		temp_orders[key] = convertToFloat(value[0])
+		temp_orders[key] = convert_to_float(value[0])
 	}
 	for len(temp_orders) != 0 {
-		// getMaxSubset will return the set of packages with max weight
-		combination := getMaxSubset(temp_orders, max_weight)
+		// get_max_subset will return the set of packages with max weight
+		combination := get_max_subset(temp_orders, max_weight)
 		// store all the set of packages which need to be delivered
 		pkg_del_seq = append(pkg_del_seq, combination)
 		// removing the max set of packages to find the max set from other packages
