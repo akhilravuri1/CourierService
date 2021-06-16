@@ -12,7 +12,7 @@ func Calculate(orders_list map[string][]string, base_delivery_cost float64, numb
 	}
 	orders_cost := calculate_cost(orders_list, base_delivery_cost)
 	orders_time := calculate_time(orders_list, number_of_vehicals, max_speed, max_weight)
-	Display_order_cost_with_time(orders_cost, orders_time)
+	Display_Order_Cost_With_Time(orders_cost, orders_time)
 }
 
 // Calculate_Cost exposed API to return discount amount and cost after discount
@@ -33,8 +33,8 @@ func Calculate_Time(orders_list map[string][]string, number_of_vehicals int, max
 	return orders_time
 }
 
-// Display_order_cost_with_time will just display the total cost after discount
-func Display_order_cost_with_time(orders_cost, orders_time map[string][]string) {
+// Display_Order_Cost_With_Time will just display the total cost after discount
+func Display_Order_Cost_With_Time(orders_cost, orders_time map[string][]string) {
 	fmt.Println("\nORDERS COST WITH TIME:- ")
 	for key := range orders_time {
 		orders_cost[key] = append(orders_cost[key], orders_time[key][3])
