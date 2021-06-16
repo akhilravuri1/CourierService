@@ -4,43 +4,43 @@ package courierservice
 import "fmt"
 
 // Calculate function will calculate and diaplay the discount amount, price to be paid after discount and time to deliver
-func Calculate(orders_list map[string][]string, base_delivery_cost float64, number_of_vehicals int, max_speed float64, max_weight float64) {
-	for id, pkg_details := range orders_list {
-		if convertToFloat(pkg_details[0]) > max_weight {
+func Calculate(ordersList map[string][]string, baseDeliveryCost float64, numberOfVehicals int, maxSpeed float64, maxWeight float64) {
+	for id, pkgDetails := range ordersList {
+		if convertToFloat(pkgDetails[0]) > maxWeight {
 			fmt.Println("Removing", id, "from the orders because it's weight is graterthan the vehical maximum carring weight")
-			delete(orders_list, id)
+			delete(ordersList, id)
 		}
 	}
-	orders_cost := calculateCost(orders_list, base_delivery_cost)
-	orders_time := calculateTime(orders_list, number_of_vehicals, max_speed, max_weight)
-	DisplayOrderCostWithTime(orders_cost, orders_time)
+	ordersCost := calculateCost(ordersList, baseDeliveryCost)
+	ordersTime := calculateTime(ordersList, numberOfVehicals, maxSpeed, maxWeight)
+	DisplayOrderCostWithTime(ordersCost, ordersTime)
 }
 
 // CalculateCost exposed API to return discount amount and cost after discount
-func CalculateCost(orders_list map[string][]string, base_delivery_cost float64) map[string][]string {
-	orders_cost := calculateCost(orders_list, base_delivery_cost)
-	return orders_cost
+func CalculateCost(ordersList map[string][]string, baseDeliveryCost float64) map[string][]string {
+	ordersCost := calculateCost(ordersList, baseDeliveryCost)
+	return ordersCost
 }
 
 // CalculateTime exposed API to return estimated time
-func CalculateTime(orders_list map[string][]string, number_of_vehicals int, max_speed float64, max_weight float64) map[string][]string {
-	for id, pkg_details := range orders_list {
-		if convertToFloat(pkg_details[0]) > max_weight {
+func CalculateTime(ordersList map[string][]string, numberOfVehicals int, maxSpeed float64, maxWeight float64) map[string][]string {
+	for id, pkgDetails := range ordersList {
+		if convertToFloat(pkgDetails[0]) > maxWeight {
 			fmt.Println("Removing", id, "from the orders because it's weight is greater than the vehical maximum carring weight")
-			delete(orders_list, id)
+			delete(ordersList, id)
 		}
 	}
-	orders_time := calculateTime(orders_list, number_of_vehicals, max_speed, max_weight)
-	return orders_time
+	ordersTime := calculateTime(ordersList, numberOfVehicals, maxSpeed, maxWeight)
+	return ordersTime
 }
 
 // DisplayOrderCostWithTime will just display the total cost after discount
-func DisplayOrderCostWithTime(orders_cost, orders_time map[string][]string) {
+func DisplayOrderCostWithTime(ordersCost, ordersTime map[string][]string) {
 	fmt.Println("\nORDERS COST WITH TIME:- ")
-	for key := range orders_time {
-		orders_cost[key] = append(orders_cost[key], orders_time[key][3])
+	for key := range ordersTime {
+		ordersCost[key] = append(ordersCost[key], ordersTime[key][3])
 	}
-	for pkg_name := range orders_cost {
-		fmt.Println(pkg_name, " ", orders_cost[pkg_name][0], " ", orders_cost[pkg_name][1], " ", orders_cost[pkg_name][2]+"hr")
+	for pkgName := range ordersCost {
+		fmt.Println(pkgName, " ", ordersCost[pkgName][0], " ", ordersCost[pkgName][1], " ", ordersCost[pkgName][2]+"hr")
 	}
 }

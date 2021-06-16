@@ -8,28 +8,28 @@ import (
 
 // convertToFloat converts string to float
 func convertToFloat(in string) float64 {
-	float_value, err := strconv.ParseFloat(in, 64)
+	floatValue, err := strconv.ParseFloat(in, 64)
 	if err != nil {
 		log.Fatalln("Error while converting to float64: ", err)
 	}
-	return float_value
+	return floatValue
 }
 
 // discountCalculate will calculate the amount to be detectud after discount
-func discountCalculate(total_cost_before_discount float64, offer_code string, pkg_weight float64, pkg_distance float64) float64 {
+func discountCalculate(totalCostBeforeDiscount float64, offerCode string, pkgWeight float64, pkgDistance float64) float64 {
 	var discount float64
 	// check for the offer_code and apply the formula
-	if offer_code == "OFR001" {
-		if 70 <= pkg_weight && pkg_weight <= 200 && pkg_distance < 200 {
-			discount = (total_cost_before_discount * 10) / 100
+	if offerCode == "OFR001" {
+		if 70 <= pkgWeight && pkgWeight <= 200 && pkgDistance < 200 {
+			discount = (totalCostBeforeDiscount * 10) / 100
 		}
-	} else if offer_code == "OFR002" {
-		if 100 <= pkg_weight && pkg_weight <= 250 && pkg_distance <= 150 && pkg_distance >= 50 {
-			discount = (total_cost_before_discount * 7) / 100
+	} else if offerCode == "OFR002" {
+		if 100 <= pkgWeight && pkgWeight <= 250 && pkgDistance <= 150 && pkgDistance >= 50 {
+			discount = (totalCostBeforeDiscount * 7) / 100
 		}
-	} else if offer_code == "OFR003" {
-		if 10 <= pkg_weight && pkg_weight <= 100 && pkg_distance <= 250 && pkg_distance >= 50 {
-			discount = (total_cost_before_discount * 5) / 100
+	} else if offerCode == "OFR003" {
+		if 10 <= pkgWeight && pkgWeight <= 100 && pkgDistance <= 250 && pkgDistance >= 50 {
+			discount = (totalCostBeforeDiscount * 5) / 100
 		}
 	} else {
 		// here we can add new offer codes
@@ -39,21 +39,21 @@ func discountCalculate(total_cost_before_discount float64, offer_code string, pk
 }
 
 // calculateCost will calculate the total cost of a pkg
-func calculateCost(order_list map[string][]string, base_delivery_cost float64) map[string][]string {
-	orders_cost := make(map[string][]string)
+func calculateCost(orderList map[string][]string, baseDeliveryCost float64) map[string][]string {
+	ordersCost := make(map[string][]string)
 	// iterate through each order and calculate the cost
-	for key, pkg_details := range order_list {
+	for key, pkgDetails := range orderList {
 		// convert weight and distance to float
-		pkg_weight := convertToFloat(pkg_details[0])
-		pkg_distance := convertToFloat(pkg_details[1])
+		pkgWeight := convertToFloat(pkgDetails[0])
+		pkgDistance := convertToFloat(pkgDetails[1])
 		// calculate the total distance before discount using the formula
-		total_cost_before_discount := base_delivery_cost + (pkg_weight * float64(10)) + (pkg_distance * float64(5))
+		totalCostBeforeDiscount := baseDeliveryCost + (pkgWeight * float64(10)) + (pkgDistance * float64(5))
 		// calcuate the discount
-		discount := discountCalculate(total_cost_before_discount, pkg_details[2], pkg_weight, pkg_distance)
-		total_cost_after_discount := total_cost_before_discount - discount
+		discount := discountCalculate(totalCostBeforeDiscount, pkgDetails[2], pkgWeight, pkgDistance)
+		totalCostAfterDiscount := totalCostBeforeDiscount - discount
 		// store the calculated data in a map and return the map
-		orders_cost[key] = append(orders_cost[key], fmt.Sprintf("%f", discount))
-		orders_cost[key] = append(orders_cost[key], fmt.Sprintf("%f", total_cost_after_discount))
+		ordersCost[key] = append(ordersCost[key], fmt.Sprintf("%f", discount))
+		ordersCost[key] = append(ordersCost[key], fmt.Sprintf("%f", totalCostAfterDiscount))
 	}
-	return orders_cost
+	return ordersCost
 }
