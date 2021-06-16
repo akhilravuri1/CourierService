@@ -1,4 +1,4 @@
-# CourierService
+# courierservice
 
 Calculates order amount after discount and time to deliver the order.
 
@@ -9,7 +9,7 @@ Golang should be installed.
 ## How to install
 
 ```
-go get github.com/akhilravuri1/CourierService
+go get github.com/akhilravuri1/courierservice
 
 ```
 
@@ -21,7 +21,7 @@ go get github.com/akhilravuri1/CourierService
 package main
 
 import (
-	"github.com/akhilravuri1/CourierService"
+	"github.com/akhilravuri1/courierservice"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
     // you can pass float values
     max_speed := float64(70)
     max_weight :=  float64(200)
-    CourierService.Calculate(orders_list, base_delivery_cost, number_of_vehicals, max_speed, max_weight)
+    courierservice.Calculate(orders_list, base_delivery_cost, number_of_vehicals, max_speed, max_weight)
 
 }
 ```
