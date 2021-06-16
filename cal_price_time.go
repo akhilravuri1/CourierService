@@ -1,6 +1,5 @@
-// Package CourierService provides support to calculate the discount ammount and time to deliver the order.
-
-package CourierService
+// Package courierservice provides support to calculate the discount ammount and time to deliver the order.
+package courierservice
 
 import "fmt"
 
