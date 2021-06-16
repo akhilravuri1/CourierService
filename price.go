@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-// convert_to_float converts string to float
-func convert_to_float(in string) float64 {
+// convertToFloat converts string to float
+func convertToFloat(in string) float64 {
 	float_value, err := strconv.ParseFloat(in, 64)
 	if err != nil {
 		log.Fatalln("Error while converting to float64: ", err)
@@ -15,8 +15,8 @@ func convert_to_float(in string) float64 {
 	return float_value
 }
 
-// discount_calculate will calculate the amount to be detectud after discount
-func discount_calculate(total_cost_before_discount float64, offer_code string, pkg_weight float64, pkg_distance float64) float64 {
+// discountCalculate will calculate the amount to be detectud after discount
+func discountCalculate(total_cost_before_discount float64, offer_code string, pkg_weight float64, pkg_distance float64) float64 {
 	var discount float64
 	// check for the offer_code and apply the formula
 	if offer_code == "OFR001" {
@@ -38,18 +38,18 @@ func discount_calculate(total_cost_before_discount float64, offer_code string, p
 	return discount
 }
 
-// calulate_cost will calculate the total cost of a pkg
-func calculate_cost(order_list map[string][]string, base_delivery_cost float64) map[string][]string {
+// calculateCost will calculate the total cost of a pkg
+func calculateCost(order_list map[string][]string, base_delivery_cost float64) map[string][]string {
 	orders_cost := make(map[string][]string)
 	// iterate through each order and calculate the cost
 	for key, pkg_details := range order_list {
 		// convert weight and distance to float
-		pkg_weight := convert_to_float(pkg_details[0])
-		pkg_distance := convert_to_float(pkg_details[1])
+		pkg_weight := convertToFloat(pkg_details[0])
+		pkg_distance := convertToFloat(pkg_details[1])
 		// calculate the total distance before discount using the formula
 		total_cost_before_discount := base_delivery_cost + (pkg_weight * float64(10)) + (pkg_distance * float64(5))
 		// calcuate the discount
-		discount := discount_calculate(total_cost_before_discount, pkg_details[2], pkg_weight, pkg_distance)
+		discount := discountCalculate(total_cost_before_discount, pkg_details[2], pkg_weight, pkg_distance)
 		total_cost_after_discount := total_cost_before_discount - discount
 		// store the calculated data in a map and return the map
 		orders_cost[key] = append(orders_cost[key], fmt.Sprintf("%f", discount))

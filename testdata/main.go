@@ -22,7 +22,7 @@ func DiscountWithValidData() bool {
 		"PKG2": {"148.750000", "1976.250000"},
 	}
 	base_delivery_cost := float64(10)
-	returned_result := CourierService.Calculate_Cost(orders_list, base_delivery_cost)
+	returned_result := CourierService.CalculateCost(orders_list, base_delivery_cost)
 	//fmt.Println(returned_result)
 	return assert_equal(actual_result, returned_result)
 }
