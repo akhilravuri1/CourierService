@@ -4,15 +4,15 @@ package courierservice
 import "fmt"
 
 // Calculate function will calculate and diaplay the discount amount, price to be paid after discount and time to deliver
-func Calculate(ordersList map[string][]string, baseDeliveryCost float64, numberOfVehicals int, maxSpeed float64, maxWeight float64) {
+func Calculate(ordersList map[string][]string, baseDeliveryCost float64, numberOfVehicles int, maxSpeed float64, maxWeight float64) {
 	for id, pkgDetails := range ordersList {
 		if convertToFloat(pkgDetails[0]) > maxWeight {
-			fmt.Println("Removing", id, "from the orders because it's weight is graterthan the vehical maximum carring weight")
+			fmt.Println("Removing", id, "from the orders because it's weight is graterthan the vehicle maximum carring weight")
 			delete(ordersList, id)
 		}
 	}
 	ordersCost := calculateCost(ordersList, baseDeliveryCost)
-	ordersTime := calculateTime(ordersList, numberOfVehicals, maxSpeed, maxWeight)
+	ordersTime := calculateTime(ordersList, numberOfVehicles, maxSpeed, maxWeight)
 	DisplayOrderCostWithTime(ordersCost, ordersTime)
 }
 
@@ -23,14 +23,14 @@ func CalculateCost(ordersList map[string][]string, baseDeliveryCost float64) map
 }
 
 // CalculateTime exposed API to return estimated time
-func CalculateTime(ordersList map[string][]string, numberOfVehicals int, maxSpeed float64, maxWeight float64) map[string][]string {
+func CalculateTime(ordersList map[string][]string, numberOfVehicles int, maxSpeed float64, maxWeight float64) map[string][]string {
 	for id, pkgDetails := range ordersList {
 		if convertToFloat(pkgDetails[0]) > maxWeight {
-			fmt.Println("Removing", id, "from the orders because it's weight is greater than the vehical maximum carring weight")
+			fmt.Println("Removing", id, "from the orders because it's weight is greater than the vehicle maximum carrying weight")
 			delete(ordersList, id)
 		}
 	}
-	ordersTime := calculateTime(ordersList, numberOfVehicals, maxSpeed, maxWeight)
+	ordersTime := calculateTime(ordersList, numberOfVehicles, maxSpeed, maxWeight)
 	return ordersTime
 }
 

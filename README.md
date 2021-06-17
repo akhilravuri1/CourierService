@@ -34,11 +34,11 @@ func main() {
 	}
     base_delivery_cost := float64(10)
     // you can pass only int's
-    number_of_vehicals := 2
+    number_of_vehicles := 2
     // you can pass float values
     max_speed := float64(70)
     max_weight :=  float64(200)
-    courierservice.Calculate(orders_list, base_delivery_cost, number_of_vehicals, max_speed, max_weight)
+    courierservice.Calculate(orders_list, base_delivery_cost, number_of_vehicles, max_speed, max_weight)
 
 }
 ```

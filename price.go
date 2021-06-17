@@ -15,10 +15,9 @@ func convertToFloat(in string) float64 {
 	return floatValue
 }
 
-// discountCalculate will calculate the amount to be detectud after discount
+// discountCalculate will calculate the amount to be deducted after discount
 func discountCalculate(totalCostBeforeDiscount float64, offerCode string, pkgWeight float64, pkgDistance float64) float64 {
 	var discount float64
-	// check for the offer_code and apply the formula
 	if offerCode == "OFR001" {
 		if 70 <= pkgWeight && pkgWeight <= 200 && pkgDistance < 200 {
 			discount = (totalCostBeforeDiscount * 10) / 100

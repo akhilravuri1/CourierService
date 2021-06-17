@@ -14,10 +14,10 @@ func TestTimeWithValidWeight(t *testing.T) {
 		"PKG1": {"50", "50", "OFR001", "0.714286"},
 		"PKG2": {"149", "125", "OFR002", "1.785714"},
 	}
-	numberOfVehicals := 2
+	numberOfVehicles := 2
 	maxSpeed := float64(70)
 	maxWeight := float64(200)
-	returnedResult := CalculateTime(orderList, numberOfVehicals, maxSpeed, maxWeight)
+	returnedResult := CalculateTime(orderList, numberOfVehicles, maxSpeed, maxWeight)
 	result := assert_equal(actualResult, returnedResult)
 
 	if result != true {
@@ -38,10 +38,10 @@ func TestTimeWithInValidWeight(t *testing.T) {
 		"PKG1": {"50", "50", "OFR001", "0.714286"},
 		"PKG2": {"149", "125", "OFR002", "1.785714"},
 	}
-	numberOfVehicals := 2
+	numberOfVehicles := 2
 	maxSpeed := float64(70)
 	maxWeight := float64(200)
-	returnedResult := CalculateTime(orderList, numberOfVehicals, maxSpeed, maxWeight)
+	returnedResult := CalculateTime(orderList, numberOfVehicles, maxSpeed, maxWeight)
 	result := assert_equal(actualResult, returnedResult)
 
 	if result != true {
