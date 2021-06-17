@@ -22,23 +22,27 @@ package main
 
 import (
 	"github.com/akhilravuri1/courierservice"
+	"fmt"
 )
 
 func main() {
     //pkg_name : weight, distance, offer_code
-    orders_list := map[string][]string{
+    ordersList := map[string][]string{
 		"PKG1": {"50", "50", "OFR001"},
 		"PKG2": {"149", "125", "OFR002"},
 		"PKG3": {"100", "140", "OFR003"},
 		"PKG4": {"100", "125", "OFR004"},
 	}
-    base_delivery_cost := float64(10)
+    baseDeliveryCost := float64(10)
     // you can pass only int's
-    number_of_vehicles := 2
+    numberOfVehicles := 2
     // you can pass float values
-    max_speed := float64(70)
-    max_weight :=  float64(200)
-    courierservice.Calculate(orders_list, base_delivery_cost, number_of_vehicles, max_speed, max_weight)
+    maxSpeed := float64(70)
+    maxWeight :=  float64(200)
+    courierservice.Calculate(ordersList, base_delivery_cost, numberOfVehicles, maxSpeed, maxWeight)
+    orderWithDiscount := courierservice.CalulateCost(ordersList, baseDeliveryCost)
+    orderWithDeliveryTime := courierservice.CalculateTime(ordersList,numberOfVehicles,maxSpeed,maxWeight)
+    DisplayOrderCostWithTime(orderWithDiscount,orderWithDeliveryTime)
 
 }
 ```
