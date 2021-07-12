@@ -56,3 +56,22 @@ PKG2   148.750000   1976.250000   1.785714hr
 PKG3   85.500000   1624.500000   2.000000hr
 PKG4   0.000000   1635.000000   1.785714hr
 ```
+
+### Check Test Coverage
+
+Below command displays the test coverage percentage.
+```
+go test -cover . 
+```
+Below command creates a coverage file and shows the coverage percentage.
+```
+go test -coverprofile=coverage.out ./...
+```
+Below command shows the coverage percentage of each function.
+```
+go tool cover -func=coverage.out
+```
+Below command opens the code in html page where all the covered lines are marked as green and uncovered are marked as red.
+```
+go tool cover -html=coverage.out
+```
